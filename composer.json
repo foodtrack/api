@@ -1,0 +1,25 @@
+{
+    "name": "foodtrack/api",
+    "description": "Track your food, know what you eat!",
+    "autoload": {
+        "psr-4": {
+            "Foodtrack\\": "src/Foodtrack",
+            "tests\\common\\": "tests/common",
+            "tests\\units\\Foodtrack\\": "tests/src/Foodtrack"
+        }
+    },
+    "require": {
+        "silex/silex": "~1.3@dev"
+    },
+    "require-dev": {
+        "atoum/atoum": "~2.0@dev"
+    },
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Poensis",
+            "email": "contact@poensis.fr"
+        }
+    ],
+    "minimum-stability": "dev"
+}
