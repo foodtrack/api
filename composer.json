@@ -1,0 +1,20 @@
+{
+    "name": "foodtrack/api",
+    "description": "Track your food! Know what you eat!",
+    "minimum-stability": "dev",
+    "require-dev": {
+        "atoum/atoum": "~2.0@dev"
+    },
+    "authors": [
+        {
+            "name": "Anis Safine",
+            "email": "anis@poensis.fr"
+        }
+    ],
+    "license": "Apache-2.0",
+    "autoload": {
+        "psr-4": {
+            "Foodtrack\\": "src/Foodtrack"
+        }
+    }
+}
