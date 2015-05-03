@@ -11,7 +11,7 @@ class Food implements ControllerProviderInterface, ServiceProviderInterface
     public function register(Application $app)
     {
         $app['foodtrack.foodcontroller'] = $app->share(function () use($app) {
-            return new FoodController();
+            return new FoodController($app['orm.em']);
         });
     }
 
