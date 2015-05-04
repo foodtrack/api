@@ -18,7 +18,7 @@ class Food implements ControllerProviderInterface, ServiceProviderInterface
     public function connect(Application $app)
     {
         $controllers = $app['controllers_factory'];
-        $controllers->get('/list', 'foodtrack.foodcontroller:listAction');
+        $controllers->get('/', 'foodtrack.foodcontroller:listAction');
         return $controllers;
     }
 
