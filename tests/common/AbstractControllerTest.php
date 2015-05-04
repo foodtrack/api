@@ -2,26 +2,10 @@
 namespace tests\common;
 
 use mageekguy\atoum;
+use Symfony\Component\HttpFoundation\Request;
 
 abstract class AbstractControllerTest extends atoum
 {
-    /**
-     * Returns the name of the controller service name
-     *
-     * @return string
-     */
-    abstract public function getServiceName();
-
-    /**
-     * Gets an instance for tested controller
-     *
-     * @return mixed
-     */
-    public function getTestedInstance()
-    {
-        return $this->getApp()[$this->getServiceName()];
-    }
-
     /**
      * Gets the application instance
      *
@@ -31,6 +15,18 @@ abstract class AbstractControllerTest extends atoum
     {
         global $app;
         return $app;
+    }
+
+    /**
+     * Fakes a request
+     *
+     * @param string $uri URI
+     *
+     * @return Symfony\Component\HttpFoundation\Response
+     */
+    public function request($uri)
+    {
+        return $this->getApp()->handle(Request::create($uri));
     }
 
     /**
@@ -56,38 +52,6 @@ abstract class AbstractControllerTest extends atoum
             return $repository;
         };
 
-        $this->setEntityManager($em);
-    }
-
-    /**
-     * Shortcut for accessing the application instance
-     *
-     * {@inheritdoc}
-     */
-    public function __get($name)
-    {
-        if ($name === 'app') {
-            return $this->getApp();
-        }
-
-        return parent::__get($name);
-    }
-
-    /**
-     * Shortcut for calling a method of the tested instance
-     *
-     * @param string $method    Method name
-     * @param array  $arguments Method arguments
-     *
-     * @return mixed
-     */
-    public function __call($name, $arguments)
-    {
-        $testedInstance = $this->getTestedInstance();
-        if (method_exists($testedInstance, $name)) {
-            return call_user_func_array(array($testedInstance, $name), $arguments);
-        }
-
-        return parent::__call($name, $arguments);
+        $this->getApp()['orm.em'] = $em;
     }
 }

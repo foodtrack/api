@@ -10,13 +10,7 @@ class FoodController
 
     public function __construct(EntityManager $em)
     {
-        $this->setEntityManager($em);
-    }
-
-    public function setEntityManager(EntityManager $em)
-    {
         $this->em = $em;
-        return $this;
     }
 
     public function listAction()
