@@ -12,49 +12,41 @@ class FoodController extends AbstractControllerTest
         return 'foodtrack.foodcontroller';
     }
 
-    public function test___listAction___returnsJson()
+    public function test___list___returnsJsonData()
     {
-        $this->object($this->listAction())
-            ->isInstanceOf('Symfony\Component\HttpFoundation\JsonResponse');
+        $this->object($this->listAction())->isInstanceOf('Symfony\Component\HttpFoundation\JsonResponse');
     }
 
-    public function test___listAction___returnsFoodList()
+    public function test___list___returnsA200()
     {
-        // Generate test data
-        $data = array(
-            'expected' => array(),
+        $this->integer($this->listAction()->getStatusCode())->isEqualTo(200);
+    }
+
+    public function test___list___returnsAllFood()
+    {
+        // Test data
+        $expected = array(
+            'raw'      => array(),
             'entities' => array(),
         );
 
         for ($i = 0; $i < 3; $i++) {
-            $expected = array('name' => uniqid(), 'calories' => rand());
-
-            $entity = new Food();
-            $entity->setName($expected['name']);
-            $entity->setCalories($expected['calories']);
-
-            $data['expected'][] = $expected;
-            $data['entities'][] = $entity;
+            $data = $this->generateFood();
+            $expected['entities'][] = $data;
+            $expected['raw'][] = $data->toArray();
         }
 
-        // Mock the repository
-        $this->mockGenerator->orphanize('__construct');
+        // Actual test
+        $this->mockRepository('Foodtrack\Entity\Food', 'findAll', $expected['entities']);
+        $this->array(json_decode($this->listAction()->getContent(), true))->isIdenticalTo($expected['raw']);
+    }
 
-        $repository = new \mock\Doctrine\ORM\EntityRepository();
-        $repository->getMockController()->findAll = function () use($data) {
-            return $data['entities'];
-        };
+    protected function generateFood()
+    {
+        $entity = new Food();
+        $entity->setName(uniqid());
+        $entity->setCalories(rand());
 
-        // Mock the entity manager
-        $em = new \mock\Doctrine\ORM\EntityManager();
-        $em->getMockController()->getRepository = function () use ($repository) {
-            return $repository;
-        };
-
-        $this->setEntityManager($em);
-
-        // Make the actual test
-        $response = json_decode($this->listAction()->getContent(), true);
-        $this->array($response)->isIdenticalTo($data['expected']);
+        return $entity;
     }
 }

@@ -34,6 +34,32 @@ abstract class AbstractControllerTest extends atoum
     }
 
     /**
+     * Mocks a Doctrine repository
+     *
+     * @param string $entity      Entity class name
+     * @param string $method      Method name to be mocked in the repository
+     * @param mixed  $returnValue Value to be returned
+     */
+    public function mockRepository($entity, $method, $returnValue)
+    {
+        // Mock the repository
+        $this->mockGenerator->orphanize('__construct');
+
+        $repository = new \mock\Doctrine\ORM\EntityRepository();
+        $repository->getMockController()->$method = function () use($returnValue) {
+            return $returnValue;
+        };
+
+        // Mock the entity manager
+        $em = new \mock\Doctrine\ORM\EntityManager();
+        $em->getMockController()->getRepository = function () use ($repository) {
+            return $repository;
+        };
+
+        $this->setEntityManager($em);
+    }
+
+    /**
      * Shortcut for accessing the application instance
      *
      * {@inheritdoc}

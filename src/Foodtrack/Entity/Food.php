@@ -40,4 +40,12 @@ class Food
     {
         return $this->calories;
     }
+
+    public function toArray()
+    {
+        return array(
+            'name' => $this->getName(),
+            'calories' => $this->getCalories(),
+        );
+    }
 }
