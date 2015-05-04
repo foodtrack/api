@@ -41,6 +41,43 @@ class FoodController extends AbstractControllerTest
         $this->array(json_decode($this->listAction()->getContent(), true))->isIdenticalTo($expected['raw']);
     }
 
+    public function test___search___returnsJsonData()
+    {
+        $this->object($this->searchAction('foo'))->isInstanceOf('Symfony\Component\HttpFoundation\JsonResponse');
+    }
+
+    public function test___search___givenValidName___returns200()
+    {
+        $this->mockRepository('Foodtrack\Entity\Food', 'findOneByName', new Food());
+        $this->integer($this->searchAction('foo')->getStatusCode())->isEqualTo(200);
+    }
+
+    public function test___search___givenValidName___returnsFood()
+    {
+        // Test data
+        $data = $this->generateFood();
+
+        // Actual test
+        $this->mockRepository('Foodtrack\Entity\Food', 'findOneByName', $data);
+        $this->array(json_decode($this->searchAction('foo')->getContent(), true))->isIdenticalTo($data->toArray());
+    }
+
+    public function test___search___givenInvalidName___returns404()
+    {
+        $this->mockRepository('Foodtrack\Entity\Food', 'findOneByName', null);
+        $this->integer($this->searchAction('bar')->getStatusCode())->isEqualTo(404);
+    }
+
+    public function test___search___givenInvalidName___returnsError()
+    {
+        $this->mockRepository('Foodtrack\Entity\Food', 'findOneByName', null);
+        $this->array(json_decode($this->searchAction('foo')->getContent(), true))->isIdenticalTo(
+            array(
+                'error' => 'Food named `foo` does not exist'
+            )
+        );
+    }
+
     protected function generateFood()
     {
         $entity = new Food();
