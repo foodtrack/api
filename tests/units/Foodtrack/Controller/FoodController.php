@@ -2,14 +2,21 @@
 namespace tests\units\Foodtrack\Controller;
 
 use mageekguy\atoum;
+use Symfony\Component\HttpFoundation\Request;
 
 class FoodController extends atoum
 {
     public function test___list___returnsAnArray()
     {
         $this
-            ->given($this->newTestedInstance())
+            ->given($response = $this->get('/food'))
             ->then
-            ->array($this->testedInstance->listAction());
+            ->object($response)
+                ->isInstanceOf('Symfony\Component\HttpFoundation\JsonResponse');
+    }
+
+    public function get($uri)
+    {
+        return getApp()->handle(Request::create($uri));
     }
 }

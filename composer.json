@@ -16,5 +16,8 @@
         "psr-4": {
             "Foodtrack\\": "src/Foodtrack"
         }
+    },
+    "require": {
+        "silex/silex": "~2.0@dev"
     }
 }
