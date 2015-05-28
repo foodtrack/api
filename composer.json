@@ -3,7 +3,8 @@
     "description": "Track your food! Know what you eat!",
     "minimum-stability": "dev",
     "require-dev": {
-        "atoum/atoum": "~2.0@dev"
+        "atoum/atoum": "~2.0@dev",
+        "phpunit/phpunit": "^4.8@dev"
     },
     "authors": [
         {
