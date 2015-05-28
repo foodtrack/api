@@ -3,6 +3,9 @@ php:
   - "5.6"
 install:
   - composer install
+addons:
+  hosts:
+    - api.dev.foodtrack.com
 before_script:
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
