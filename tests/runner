@@ -1,0 +1,5 @@
+#!/bin/bash
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+"$DIR/../vendor/bin/atoum" -bf "$DIR/units/.bootstrap.atoum.php" -d "$DIR/units/"
+"$DIR/../vendor/bin/phpunit" --configuration="$DIR/integration/.config.phpunit.xml"

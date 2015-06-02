@@ -19,5 +19,4 @@ before_script:
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
   - sudo service apache2 restart
 script:
-  - ./vendor/bin/atoum -bf ./tests/units/.bootstrap.atoum.php -d ./tests/units/
-  - ./vendor/bin/phpunit --configuration=./tests/integration/.config.phpunit.xml
+  - ./tests/runner
